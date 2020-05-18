@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'leftnav.html' %}
+    <main>
+        <div class="top-headerbar">
+        </div>
+        <div id="header" class="header">
+            <h1>{{ feed_header }}</h1>
+        </div>
+
+        <div class="feed">
+            <div class="list-articles">
+            {% for article in articles %}
+                <article class="row">    
+                    <a href="{% url 'single-article' article.slug %}" target="_blank" class="thumb col-md-3">
+                        <img src="{{ article.thumb }}" alt="">
+                    </a>
+                    <div class="content col-md-9">
+                        <a class="content-title" href="{% url 'single-article' article.slug %}" target="_blank">{{ article.title }}</a>
+                        <button class="save-for-later" title="Read Later" type="button"></button>
+                        <div class="content-metadata">
+                            <span class="">
+                                <a href="{% url 'publisher-articles' article.publisher.slug %}">{{ article.publisher.name }}</a>
+                            </span>
+                        </div>
+                        <div class="content-sapo">{{ article.sapo }}</div>
+                    </div>
+                </article>
+            {% endfor %}
+            </div>
+        </div>
+    </main>
+    <script>
+        window.onscroll = function() {addSticky()};
+
+        var header = document.getElementById("header");
+        var sticky = header.offsetTop;
+
+        function addSticky() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+                // header.innerHTML = '<h3>Today</h3>';
+            } else {
+                header.classList.remove("sticky");
+                // header.innerHTML = '';
+            }
+        }
+    </script>
+{% endblock content %}

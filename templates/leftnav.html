@@ -1,0 +1,72 @@
+<div class="leftnav">
+    <div class="leftnav-dock">
+        <div class="logo dock-item">
+            <a href="{% url 'index' %}" class="dock-link">
+                <i class="fas fa-newspaper fa-2x"></i>
+            </a>
+        </div>
+        <div class="dock-item">
+            <a href="#" class="dock-link">
+                <i class="fas fa-plus fa-2x"></i>
+            </a>
+        </div>
+        <div class="dock-item">
+            <a href="#" class="dock-link">
+                <i class="fas fa-search fa-2x"></i>
+            </a>
+        </div>
+        <div class="dock-item">
+            <a href="#" class="dock-link">
+                <i class="fas fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+        <div class="dock-item">
+            <a href="{% url 'signout' %}" class="dock-link">
+                <i class="fas fa-user fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="leftnav-list">
+        <div class="leftnav-list__nav">
+            {% for item in request.session.leftnav.nav %}
+                <div class="leftnav-item {% if item.name == feed_header %}{{'leftnav-item__selected'}}{% endif %}">
+                    <a href="{{ item.url }}" class="leftnav-link">
+                        <span class="leftnav-item__icon">
+                            <i class="{{ item.icon_class_name }}"></i>
+                        </span>
+                        <span class="leftnav-item__text">
+                            {{ item.name }}
+                        </span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="leftnav-list__feed">
+            <div class="leftnav-list__heading">
+                Feeds
+            </div>
+            {% for category in request.session.leftnav.following %}
+            <div class="leftnav-item {% if category.name == feed_header %}{{'leftnav-item__selected'}}{% endif %}">
+                <a id="category_{{ category.id }}" href="{% url 'category-articles' category.slug %}" class="leftnav-link">
+                    <span class="leftnav-item__icon">
+                        <i class="fas fa-rss"></i>
+                    </span>
+                    <span class="leftnav-item__text">
+                        {{ category.name }}
+                    </span>
+                </a>
+            </div>
+            {% endfor %}
+            <div class="leftnav-item">
+                <a href="" class="leftnav-link">
+                    <span class="leftnav-item__icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                    <span class="leftnav-item__text">
+                        Thêm 
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
