@@ -77,7 +77,6 @@ DOWNLOAD_DELAY = 5
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'NewsScraper.pipelines.DuplicatePipeline': 200,
     'NewsScraper.pipelines.NewsscraperPipeline': 300,
 }
 

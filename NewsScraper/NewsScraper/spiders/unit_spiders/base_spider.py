@@ -2,13 +2,11 @@
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst
-from NewsScraper.items import FeedItem
+from ...items import ArticleItem
 
 
 class BaseSpider(scrapy.Spider):
-    start_urls = [
-        'http://example.vn/'
-    ]
+    start_urls = []
 
     main_xpath = ''
     articles_xpath = ''
@@ -41,7 +39,7 @@ class BaseSpider(scrapy.Spider):
             thumb = response.urljoin(article.xpath(self.thumb_xpath).extract_first())
             url = response.urljoin(article.xpath(self.url_xpath).extract_first())
             
-            feed_loader = ItemLoader(item=FeedItem(), selector=article)
+            feed_loader = ItemLoader(item=ArticleItem(), selector=article)
             feed_loader.default_output_processor = TakeFirst()
             feed_loader.add_value('thumb', thumb)
             feed_loader.add_xpath('title', self.title_xpath)

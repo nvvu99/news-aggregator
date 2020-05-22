@@ -1,21 +1,7 @@
 # -*- coding: utf-8 -*-
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from .baotintuc import BaoTinTucSpider
-from .doanhnghiepvn import DoanhNghiepSpider
-from .kienthuc import KienThucSpider
-from .laodongthudo import LaoDongThuDoSpider
-from .nghenhinvietnam import NgheNhinVietNamSpider
-from .nhandan import NhanDanSpider
-from .phapluatxahoi import PhapLuatXaHoiSpider
-from .plo import PLOSpider
-from .tapchimattran import TapChiMatTranSpider
-from .thoidai import ThoiDaiSpider
-from .tienphong import TienPhongSpider
-from .vanhien import VanHienSpider
-from .vietnamnet import VietNamNetSpider
-from .vietnamplus import VietNamPlusSpider
-from .vov import VOVSpider
+from .unit_spiders import *
 
 
 process = CrawlerProcess(get_project_settings())
