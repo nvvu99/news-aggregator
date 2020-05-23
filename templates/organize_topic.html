@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'leftnav.html' %}
+    <main>
+        <div class="top-headerbar">
+            <h1>Quản lý chủ đề</h1>
+        </div>
+        {% if form.fields.following.choices|length > 0 %}
+        <form action="" method="post">
+            <h5>Bỏ chọn chủ đề bạn không muốn theo dõi</h5>
+            {% csrf_token %}
+            {% for choice_value, choice_name in form.fields.following.choices %}
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input
+                            type="checkbox" 
+                            class="form-check-input" 
+                            name="{{ form.following.name }}" 
+                            id="" 
+                            value="{{ choice_value }}"
+                            checked
+                        >
+                        {{ choice_name }}
+                    </label>
+                </div>
+            {% endfor %}
+            
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Xác nhận</button>
+        </form>
+        {% else %}
+        <h5 style="margin: 3em 3em">Bạn đang không theo dõi chủ đề nào</h3>
+        {% endif %}
+    </main>
+{% endblock content %}

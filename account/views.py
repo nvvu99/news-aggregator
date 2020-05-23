@@ -1,13 +1,17 @@
 from .models import User
-from .forms import SignupForm, SigninForm, ResetPasswordForm, ChangePasswordForm
-from django.views.generic.edit import FormView, CreateView
+from news.models import Category, Article
+from .forms import *
+from django.views import View
+from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic.base import RedirectView
 from django.views.generic import ListView, DetailView, TemplateView
-from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.db.models import Q
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseNotAllowed
+from django.shortcuts import redirect
 
 # Create your views here.
 class SigninView(FormView):
@@ -27,43 +31,17 @@ class SigninView(FormView):
         return super().form_valid(form)
 
     def init_session(self):
-        user = self.request.user
-        following = [
-            {
-                'id': category.id,
-                'name': category.name,
-                'slug': category.slug,
-            } for category in user.following.all()
-        ]
-        leftnav = {
-            'nav': [
-                {
-                    'name': 'Mới nhất',
-                    'url': reverse('index'),
-                    'icon_class_name': 'fas fa-newspaper',
-                },
-                {
-                    'name': 'Đã lưu',
-                    'url': reverse('saved'),
-                    'icon_class_name': 'fas fa-bookmark',
-                },
-                {
-                    'name': 'Lịch sử',
-                    'url': reverse('history'),
-                    'icon_class_name': 'fas fa-history',
-                },
-            ],
-            'following': following,
-        }
-        self.request.session['leftnav'] = leftnav
         if 'remember_me' not in self.request.POST:
             self.request.session.set_expiry(0)
+        else:
+            self.request.session.set_expiry(3600 * 24 * 15) # 15 days
 
 
-class SignupView(CreateView):
+class SignupView(SuccessMessageMixin, CreateView):
     template_name = 'signup.html'
     form_class = SignupForm
-    success_url = '/account/signin'
+    success_url = reverse_lazy('signin')
+    success_message = 'Đăng ký thành công. Vui lòng đăng nhập.'
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -74,7 +52,7 @@ class SignupView(CreateView):
 class SignoutView(LoginRequiredMixin, RedirectView):
     login_url = reverse_lazy('signin')
 
-    url = '/account/signin'
+    url = reverse_lazy('signin')
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
@@ -88,12 +66,13 @@ class ResetPasswordView(LoginRequiredMixin, FormView):
     success_url = '/account/signin'
 
 
-class ChangePasswordView(LoginRequiredMixin, FormView):
+class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, FormView):
     login_url = reverse_lazy('signin')
 
     form_class = ChangePasswordForm
-    success_url = reverse_lazy('password_change_done')
+    success_url = reverse_lazy('change_password')
     template_name = 'change_password.html'
+    success_message = 'Thay đổi mật khẩu thành công. Vui lòng đăng nhập lại.'
     
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -101,9 +80,20 @@ class ChangePasswordView(LoginRequiredMixin, FormView):
         return kwargs
 
 
-class AccountDetailView(LoginRequiredMixin, TemplateView):
+class UpdateUserInfoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     login_url = reverse_lazy('signin')
     template_name = 'account.html'
+    form_class = UpdateUserInfoForm
+    success_url = reverse_lazy('account')
+    success_message = "Thay đổi thông tin thành công"
+
+    def get_object(self):
+        return self.request.user
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class BaseView(LoginRequiredMixin, ListView):
@@ -120,7 +110,8 @@ class SavedArticleView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['feed_header'] = 'Đã lưu'
+        context['selected_leftnav_item'] = 'saved-article'
+        context['feed_header'] = 'Tin đã lưu'
         return context
 
 
@@ -130,5 +121,52 @@ class HistoryView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['feed_header'] = 'Lịch sử'
+        context['selected_leftnav_item'] = 'history'
+        context['feed_header'] = 'Tin đã xem'
         return context
+
+
+class OrganizeTopicView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = User
+    template_name = 'organize_topic.html'
+    form_class = OrganizeTopicForm
+    success_url = reverse_lazy('organize_topic')
+    success_message = 'Thay đổi thành công'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super().get_form_kwargs(*args, **kwargs)
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+class AddTopicView(OrganizeTopicView):
+    template_name = 'add_topic.html'
+    form_class = AddTopicForm
+    success_url = reverse_lazy('add_topic')
+
+
+class SaveArticle(LoginRequiredMixin, View):
+    login_url = reverse_lazy('signin')
+
+    def post(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed(['POST'], content='Not allowed!')
+
+    def get(self, request, *args, **kwargs):
+        if 'article_id' in request.GET:
+            article_id = request.GET['article_id']
+            try:
+                article = Article.objects.get(pk=article_id)
+            except Article.DoesNotExist:
+                return HttpResponseNotFound('Article does not exist!')
+            else:
+                user = request.user
+                if (article not in user.saved_articles.all()):
+                    user.saved_articles.add(article)
+                    return HttpResponse('Save successfully!', status=201)
+                else:
+                    user.saved_articles.remove(article)
+                    return HttpResponse('Unsave successfully!')
+        return super().post(request, *args, **kwargs)

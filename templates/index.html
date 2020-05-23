@@ -16,15 +16,23 @@
                     <a href="{% url 'single-article' article.slug %}" target="_blank" class="thumb col-md-3">
                         <img src="{{ article.thumb }}" alt="">
                     </a>
-                    <div class="content col-md-9">
-                        <a class="content-title" href="{% url 'single-article' article.slug %}" target="_blank">{{ article.title }}</a>
-                        <button class="save-for-later" title="Read Later" type="button"></button>
-                        <div class="content-metadata">
+                    <div class="article-content col-md-9">
+                        <a class="article-content__title row" href="{% url 'single-article' article.slug %}" target="_blank">
+                            {{ article.title }}
+                        </a>
+                        <button class="btn btn-default save-for-later" article-id="{{ article.pk }}" title="Lưu lại" type="button">
+                            {% if article in request.user.saved_articles.all %}
+                                <i class="fas fa-bookmark"></i>
+                            {% else %}
+                                <i class="far fa-bookmark"></i>
+                            {% endif %}
+                        </button>
+                        <div class="article-content__metadata">
                             <span class="">
                                 <a href="{% url 'publisher-articles' article.publisher.slug %}">{{ article.publisher.name }}</a>
                             </span>
                         </div>
-                        <div class="content-sapo">{{ article.sapo }}</div>
+                        <div class="article-content__sapo">{{ article.sapo }}</div>
                     </div>
                 </article>
             {% endfor %}

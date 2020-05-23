@@ -26,16 +26,10 @@ class BaseView(LoginRequiredMixin, ListView):
     template_name = 'index.html'
     context_object_name = 'articles'
 
-    # def get(self, request, *args, **kwargs):
-    #     if 'username' not in request.session:
-    #         return redirect('/account/signin')
-
-    #     return super(BaseView, self).get(request, *args, **kwargs)
-
 
 class IndexView(BaseView):    
     def get_queryset(self):
-        following = self.request.session['leftnav']['following']
+        following = self.request.session.get('following')
         query = Q()
         for category in following:
             query |= Q(category_id=category['id'])
@@ -43,7 +37,8 @@ class IndexView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['feed_header'] = 'Mới nhất'
+        context['selected_leftnav_item'] = 'newest'
+        context['feed_header'] = 'Tin mới nhất'
         return context
     
 
@@ -54,6 +49,7 @@ class ArticleByCategoryView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticleByCategoryView, self).get_context_data(**kwargs)
+        context['selected_leftnav_item'] = 'category-{}'.format(self.selected_category.pk)
         context['feed_header'] = self.selected_category.name
         return context
 
@@ -65,14 +61,19 @@ class ArticleByPublisherView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticleByPublisherView, self).get_context_data(**kwargs)
+        context['selected_leftnav_item'] = 'publisher-{}'.format(self.selected_publisher.name)
         context['feed_header'] = self.selected_publisher.name
         return context
 
 
 class ArticleDetailView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        Article = Article.objects.get(slug=self.kwargs['slug'])
-        return Article.original_url
+        article = Article.objects.get(slug=self.kwargs['slug'])
+        user = self.request.user
+        if user is not None:
+            user.history.remove(article)
+            user.history.add(article)
+        return article.original_url
 
 
 class TestView(ListView):

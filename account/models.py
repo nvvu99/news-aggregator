@@ -20,6 +20,7 @@ class User(AbstractUser):
             'unique': _("Username đã tồn tại."),
         },
     )
+    
     email = models.EmailField(
         _('email'),
         max_length = 254,
@@ -28,17 +29,24 @@ class User(AbstractUser):
             'unique': _('Email đã tồn tại.')
         },
     )
+    avatar = models.ImageField(
+        upload_to = 'user-avatar/',
+        blank = True,
+    )
     history = models.ManyToManyField(
         Article,
         related_name = 'history',
-        )
+        blank = True,
+    )
     saved_articles = models.ManyToManyField(
         Article,
         related_name = 'saved_articles',
-        )
+        blank = True,
+    )
     following = models.ManyToManyField(
         Category,
-        )
+        blank = True,
+    )
 
     def __str__(self):
         return self.username

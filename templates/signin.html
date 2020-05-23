@@ -47,6 +47,11 @@
                     {{ message }}
                 </div>
             {% endfor %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <input type="submit" class="btn btn-success" style="width: 100%" value="Đăng nhập"/>
         </form>
             

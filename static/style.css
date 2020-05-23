@@ -9,7 +9,7 @@
 @import url(fontawesome-5.13.0/css/solid.min.css);
 @import url(fontawesome-5.13.0/css/svg-with-js.min.css);
 @import url(fontawesome-5.13.0/css/v4-shims.min.css);
-@import url();
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 :root {
     font-size: 16px;
@@ -19,14 +19,16 @@
     --text-primary-color: #333333;
     --text-secondary-color: #888;
     --grey: #888;
+    --light-grey: #ccc;
     --selected-color: #2bb24c;
+    --leftnav-dock-width: calc(3em + 1px);
+    --leftnav-list-width: 17em;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
 }
 
 body {
@@ -48,6 +50,34 @@ main {
     margin-left: calc(20em + 1px);
 }
 
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    border-bottom: 1px solid var(--grey);
+}
+
+.right-0 {
+    right: 0;
+}
+
+.right-1 {
+    right: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
 .leftnav {
     display: flex;
     flex-direction: row;
@@ -59,7 +89,7 @@ main {
 
 .leftnav-dock {
     height: 100vh;
-    width: calc(3em + 1px);
+    width: var(--leftnav-dock-width);
     padding: 0;
     margin: 0;
     display: flex;
@@ -70,7 +100,8 @@ main {
 
 .dock-item {
     width: 100%;
-    margin: 1em 0;
+    /* margin: 1em 0; */
+    font-size: 1.5em;
 }
 
 .dock-item:hover {
@@ -93,14 +124,55 @@ main {
     color: var(--grey);
 }
 
+.user-menu {
+    background-color: white;
+    border: 1px solid var(--light-grey);
+    padding: 1em 0;
+    display: flex;
+    flex-direction: column;
+    width: 13em;
+    position: fixed;
+    left: var(--leftnav-dock-width);
+    bottom: 2em;
+}
+
+.user-menu.hidden {
+    display: none;
+}
+
+.user-menu ul {
+    list-style: none;
+    margin: 0;
+}
+
+.user-menu__item {
+    padding-left: 1em;
+    font-size: 0.9em;
+}
+
+.user-menu__item:hover {
+    background-color: var(--bg-hover-color);
+}
+
+.user-menu__item a:hover {
+    text-decoration: none;
+}
+
+.user-menu__link {
+    height: 3em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .leftnav-list {
     list-style: none;
     height: 100vh;
-    width: 17em;
+    width: var(--leftnav-list-width);
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: scroll;
+    overflow: auto;
     background-color: var(--bg-secondary-color);
 }
 
@@ -121,6 +193,10 @@ main {
 
 .leftnav-item:hover {
     background-color: var(--bg-hover-color);
+}
+
+.leftnav-item a:hover {
+    text-decoration: none;
 }
 
 .leftnav-item__selected {
@@ -170,30 +246,6 @@ main {
     font-weight: bold;
 }
 
-.relative {
-    position: relative;
-}
-
-.absolute {
-    position: absolute;
-}
-
-.sticky {
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    width: 100%;
-    border-bottom: 1px solid var(--grey);
-}
-
-.right-0 {
-    right: 0;
-}
-
-.right-1 {
-    right: 1em;
-}
-
 .sticky + .feed {
     padding-top: 10em;
 }
@@ -224,28 +276,44 @@ article {
     max-width: 100%;
 }
 
-.content {
+.article-content {
     text-align: justify;
+    position: relative;
 }
 
-.content-title {
-    color: var(--text-primary-color);
+.article-content__title {
+    color: #4caf50;
     font-weight: bolder;
     margin-bottom: 0.5em;
+    margin-right: 2em;
+    margin-left: 0;
 }
 
-.content-metadata {
+.article-content__title:hover {
+    text-decoration: none;
+    color: #2e7d32;
+}
+
+.article-content__metadata {
     font-size: 0.9em;
     color: var(--text-secondary-color);
     margin-bottom: 0.5em;
     font-weight: bolder;
 }
 
-.content-sapo {
+.article-content__sapo {
     font-size: 0.8em;
     color: var(--text-secondary-color);
     overflow: hidden;
     margin-bottom: 0.5em;
+}
+
+button.save-for-later {
+    padding-top: 0;
+    color: var(--grey);
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 footer {

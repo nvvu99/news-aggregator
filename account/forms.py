@@ -1,7 +1,9 @@
 from django import forms
 from .models import User
+from news.models import Category
 from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth import authenticate
+from django.db.models import Q
 
 
 class ResetPasswordForm(forms.Form):
@@ -60,10 +62,12 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password',)
+        fields = ('username', 'first_name', 'last_name', 'email', 'password',)
         labels = {
             'email': 'Email',
             'password': 'Mật khẩu',
+            'first_name': 'Tên',
+            'last_name': 'Họ',
         }
 
     def get_initial_for_field(self, field, field_name):
@@ -123,7 +127,7 @@ class ChangePasswordForm(forms.Form):
 
         if new_password1 != new_password2:
             raise forms.ValidationError(
-                error_messages['password_mismatch'],
+                self.error_messages['password_mismatch'],
                 code = 'password_mismatch',
             )
         return new_password2
@@ -132,14 +136,59 @@ class ChangePasswordForm(forms.Form):
         old_password = self.cleaned_data.get('old_password')
         if not self.user.check_password(old_password):
             raise forms.ValidationError(
-                error_messages['password_incorrect'],
+                self.error_messages['password_incorrect'],
                 code = 'password_incorrect',
             )
         return old_password
 
-    def save(self, commit=True):
+    def clean(self):
         new_password = self.cleaned_data.get('new_password1')
         self.user.set_password(new_password)
-        if commit:
-            self.user.save()
-        return self.user
+        self.user.save()
+        return self.cleaned_data
+
+
+class OrganizeTopicForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.following = user.following.all()
+        self.fields['following'].queryset = self.following
+
+    class Meta:
+        model = User
+        fields = ('following', )
+        widgets = {
+            'following': forms.CheckboxSelectMultiple(),
+        }
+
+
+class AddTopicForm(OrganizeTopicForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+        following_query = Q()
+
+        for category in self.following:
+            following_query |= Q(pk=category.pk)
+
+        self.fields['following'].queryset = Category.objects.exclude(following_query)
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['following'] = cleaned_data.get('following').union(self.following)
+        return cleaned_data
+
+
+class UpdateUserInfoForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        return super().__init__(*args, **kwargs)
+
+    
+    class Meta:
+        model = User
+        fields = ('last_name', 'first_name', 'avatar')
+        labels = {
+            'last_name': 'Họ',
+            'first_name': 'Tên',
+            'avatar': 'Avatar',
+        }

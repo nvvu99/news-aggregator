@@ -16,7 +16,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -42,7 +42,7 @@ class Publisher(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name, *args, **kwargs)
-        super(Publisher, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -89,12 +89,12 @@ class Article(models.Model):
         blank = True,
         )
     published_date = models.DateTimeField(
-        blank = True,
+        null = True,
         )
 
     def save(self, *args, **kargs):
         self.slug = slugify(self.title)
-        super(Feed, self).save(*args, **kargs)
+        super().save(*args, **kargs)
 
     def __str__(self):
         return self.title
