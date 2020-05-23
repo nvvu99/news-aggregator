@@ -1,5 +1,6 @@
 # News Aggregator web app
 -------------------
+[ongoing]
 * This project used Django and Scrapy to create a News Aggregator web app
 * Database used: MySQL
 
