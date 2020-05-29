@@ -5,9 +5,10 @@ from django.views.generic import ListView
 from django.views.generic.base import RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.utils.translation import gettext, gettext_lazy as _
+from django.urls import reverse_lazy
 
 
-# Create your views here.
 class PublisherView(ListView):
     model = Publisher
     context_object_name = 'publishers'
@@ -19,10 +20,10 @@ class CategoryListView(ListView):
 
 
 class BaseView(LoginRequiredMixin, ListView):
-    login_url = '/account/signin'
+    login_url = reverse_lazy('login')
 
     model = Article
-    paginate_by = 20
+    paginate_by = 25
     template_name = 'index.html'
     context_object_name = 'articles'
 
@@ -35,23 +36,21 @@ class BaseView(LoginRequiredMixin, ListView):
         max_page_range = min(min_page_range+4, page_obj.paginator.num_pages)
         page_range = range(min_page_range, max_page_range+1)
         context['page_range'] = page_range
-
         return context
 
 
 class IndexView(BaseView):
+    extra_context = {
+        'title': _('Tin mới nhất'),
+        'selected_leftnav_item': _('newest'),
+    }
+
     def get_queryset(self):
         following = self.request.user.following.all()
         query = Q()
         for category in following:
             query |= Q(category_id=category.pk)
         return super().get_queryset().filter(query)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['selected_leftnav_item'] = 'newest'
-        context['feed_header'] = 'Tin mới nhất'
-        return context
 
 
 class ArticleByCategoryView(BaseView):
@@ -64,7 +63,7 @@ class ArticleByCategoryView(BaseView):
         context = super().get_context_data(**kwargs)
         context['selected_leftnav_item'] = 'category-{}'.format(
             self.selected_category.pk)
-        context['feed_header'] = self.selected_category.name
+        context['title'] = self.selected_category.name
 
         return context
 
@@ -79,7 +78,7 @@ class ArticleByPublisherView(BaseView):
         context = super().get_context_data(**kwargs)
         context['selected_leftnav_item'] = 'publisher-{}'.format(
             self.selected_publisher.name)
-        context['feed_header'] = self.selected_publisher.name
+        context['title'] = self.selected_publisher.name
         return context
 
 
@@ -94,6 +93,9 @@ class ArticleDetailView(RedirectView):
 
 
 class SearchArticlesView(BaseView):
+    extra_context = {
+        'title': _('Tìm kiếm')
+    }
     def get(self, request, *args, **kwargs):
         self.search_articles_query = Q(pk=-1)
         if request.GET.get('q') is not None:
@@ -112,19 +114,6 @@ class SearchArticlesView(BaseView):
     def get_queryset(self):
         return super().get_queryset().filter(self.search_articles_query)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['feed_header'] = 'Tìm kiếm'
-        return context
-
 
 class TestView(ListView):
-    # model = Publisher
     template_name = 'test.html'
-    # context_object_name = 'contexts'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(TestView, self).get_context_data(**kwargs)
-    #     # context['categories'] = Category.objects.all()
-    #     context['Articles'] = Article.objects.all()
-    #     return context

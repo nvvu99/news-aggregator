@@ -256,10 +256,6 @@ main {
   font-weight: 600;
 }
 
-.sticky + .feed {
-  padding-top: 10em;
-}
-
 .header {
   height: 5em;
   padding: 0 5em;

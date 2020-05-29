@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from account.views import SigninView, SignupView
+from account.views import LoginView, RegisterView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 import jet
 import jet.dashboard
 
@@ -27,4 +27,10 @@ urlpatterns = [
     path('', include('account.urls')),
     path('news/', include('news.urls')),
     path('api/', include('api.urls')),
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

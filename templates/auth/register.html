@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
 {% block content %}
     <div class="container">
         <form method="post" action="" class="page-center col-lg-4">
@@ -102,7 +106,7 @@
     </div>
     <footer class="container">
         <div class="page-center col-lg-4">
-            <a href="{% url 'signin' %}">Đã có tài khoản? Đăng nhập.</a>
+            <a href="{% url 'login' %}">Đã có tài khoản? Đăng nhập.</a>
         </div>
     </footer>
 {% endblock content %}

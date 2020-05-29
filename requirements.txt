@@ -3,3 +3,4 @@ django-rest-framework
 django-cors-headers
 mysqlclient
 scrapy
+django-3-jet

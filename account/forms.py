@@ -2,24 +2,18 @@ from django import forms
 from .models import User
 from news.models import Category
 from django.utils.translation import gettext, gettext_lazy as _
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, forms as auth_forms
 from django.db.models import Q
 
 
-class ResetPasswordForm(forms.Form):
-    email = forms.EmailField(
-        label = _('Email')
-    )
-
-
-class SigninForm(forms.Form):
+class LoginForm(forms.Form):
     username = forms.CharField(
-        label = _('Username'),
+        label=_('Username'),
     )
     password = forms.CharField(
-        label = _("Mật khẩu"),
-        strip = False,
-        widget = forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
+        label=_("Mật khẩu"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
     )
 
     error_messages = {
@@ -31,18 +25,19 @@ class SigninForm(forms.Form):
         return super().__init__(*args, **kwargs)
 
     def get_initial_for_field(self, field, field_name):
-            return ''
+        return ''
 
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         if username is not None and password is not None:
-            self.user_cache = authenticate(username=username, password=password)
+            self.user_cache = authenticate(
+                username=username, password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(
                     self.error_messages['invalid_login'],
-                    code = 'invalid_login',
-                    )
+                    code='invalid_login',
+                )
 
         return self.cleaned_data
 
@@ -50,15 +45,15 @@ class SigninForm(forms.Form):
         return self.user_cache
 
 
-class SignupForm(forms.ModelForm):
+class RegisterForm(forms.ModelForm):
     error_messages = {
         'password_mismatch': _('Mật khẩu không khớp.'),
     }
 
     re_password = forms.CharField(
-        label = 'Nhập lại mật khẩu', 
-        widget = forms.PasswordInput,
-        )
+        label='Nhập lại mật khẩu',
+        widget=forms.PasswordInput,
+    )
 
     class Meta:
         model = User
@@ -79,7 +74,7 @@ class SignupForm(forms.ModelForm):
         if password and re_password and password != re_password:
             raise forms.ValidationError(
                 self.error_messages['password_mismatch'],
-                code = 'password_mismatch'
+                code='password_mismatch'
             )
 
         return re_password
@@ -92,52 +87,46 @@ class SignupForm(forms.ModelForm):
         return user
 
 
-class ChangePasswordForm(forms.Form):
+class SetPasswordForm(auth_forms.SetPasswordForm):
     error_messages = {
-        'password_incorrect': _("Mật khẩu cũ bạn vừa nhập không đúng."),
         'password_mismatch': _('Mật khẩu không khớp.'),
+    }
+    new_password1 = forms.CharField(
+        label=_("Mật khẩu"),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label=_("Nhập lại mật khẩu"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+    )
+
+
+class PasswordChangeForm(SetPasswordForm):
+    error_messages = {
+        **SetPasswordForm.error_messages,
+        'password_incorrect': _("Mật khẩu cũ bạn vừa nhập không đúng."),
     }
 
     old_password = forms.CharField(
-        label = _("Mật khẩu cũ"),
-        strip = False,
-        widget = forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True}),
-    )
-    new_password1 = forms.CharField(
-        label = _("Mật khẩu mới"),
-        widget = forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-        strip = False,
-    )
-    new_password2 = forms.CharField(
-        label = _("Nhập lại mật khẩu mới"),
-        strip = False,
-        widget = forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        label=_("Mật khẩu cũ"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'current-password', 'autofocus': True}),
     )
 
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super().__init__(*args, **kwargs)
+    field_order = ['old_password', 'new_password1', 'new_password2']
 
     def get_initial_for_field(self, field, field_name):
         return ''
-
-    def clean_new_password2(self):
-        new_password1 = self.cleaned_data.get('new_password1')
-        new_password2 = self.cleaned_data.get('new_password2')
-
-        if new_password1 != new_password2:
-            raise forms.ValidationError(
-                self.error_messages['password_mismatch'],
-                code = 'password_mismatch',
-            )
-        return new_password2
 
     def clean_old_password(self):
         old_password = self.cleaned_data.get('old_password')
         if not self.user.check_password(old_password):
             raise forms.ValidationError(
                 self.error_messages['password_incorrect'],
-                code = 'password_incorrect',
+                code='password_incorrect',
             )
         return old_password
 
@@ -148,7 +137,7 @@ class ChangePasswordForm(forms.Form):
         return self.cleaned_data
 
 
-class OrganizeTopicForm(forms.ModelForm):
+class TopicOrganizeForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.following = user.following.all()
@@ -162,7 +151,7 @@ class OrganizeTopicForm(forms.ModelForm):
         }
 
 
-class AddTopicForm(OrganizeTopicForm):
+class TopicAddForm(TopicOrganizeForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(user, *args, **kwargs)
         following_query = Q()
@@ -170,20 +159,21 @@ class AddTopicForm(OrganizeTopicForm):
         for category in self.following:
             following_query |= Q(pk=category.pk)
 
-        self.fields['following'].queryset = Category.objects.exclude(following_query)
-    
+        self.fields['following'].queryset = Category.objects.exclude(
+            following_query)
+
     def clean(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['following'] = cleaned_data.get('following').union(self.following)
+        cleaned_data['following'] = cleaned_data.get(
+            'following').union(self.following)
         return cleaned_data
 
 
-class UpdateUserInfoForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         return super().__init__(*args, **kwargs)
 
-    
     class Meta:
         model = User
         fields = ('last_name', 'first_name', 'avatar')

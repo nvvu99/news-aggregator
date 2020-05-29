@@ -3,16 +3,13 @@ from .views import *
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
-    path('', SigninView.as_view(), name='signin'),
-    path('account/', UpdateUserInfoView.as_view(), name='account'),
-    path('signin/', SigninView.as_view(), name='signin'),
-    path('signup/', SignupView.as_view(), name='signup'),
-    path('resetpassword/', ResetPasswordView.as_view(), name='reset_password'),
-    path('changepassword/', ChangePasswordView.as_view(), name='change_password'),
-    path('signout/', SignoutView.as_view(), name='signout'),
+    path('', LoginView.as_view(), name='login'),
+    path('account/', UserUpdateView.as_view(), name='account'),
+    path('password-change/', PasswordChangeView.as_view(), name='password_change'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('saved/', SavedArticleView.as_view(), name='saved'),
     path('history/', HistoryView.as_view(), name='history'),
-    path('addtopic/', AddTopicView.as_view(), name='add_topic'),
-    path('organizetopic/', OrganizeTopicView.as_view(), name='organize_topic'),
-    path('savearticle/', SaveArticle.as_view(), name='save_article'),
+    path('topic-add/', TopicAddView.as_view(), name='topic_add'),
+    path('topic-organize/', TopicOrganizeView.as_view(), name='topic_organize'),
+    path('article-save/', SaveArticle.as_view(), name='article_save'),
 ]

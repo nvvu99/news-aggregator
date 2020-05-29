@@ -10,7 +10,7 @@ urlpatterns = [
          name='category_articles'),
     path('publisher/<slug:slug>', ArticleByPublisherView.as_view(),
          name='publisher_articles'),
-    path('search/', SearchArticlesView.as_view(), name='search_articles')
+    path('search/', SearchArticlesView.as_view(), name='articles_search')
     # path('contact', contact, name='contact'),
     # path('about', about, name='about'),
 ]
