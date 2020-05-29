@@ -1,131 +1,134 @@
 <div class="leftnav">
-    <div class="leftnav-dock">
-        <div class="logo dock-item">
-            <a href="{% url 'index' %}" class="dock-link">
-                <i class="fas fa-newspaper "></i>
-            </a>
-        </div>
-        <div class="dock-item">
-            <a href="#" class="dock-link">
-                <i class="fas fa-plus "></i>
-            </a>
-        </div>
-        <div class="dock-item">
-            <a href="#" class="dock-link">
-                <i class="fas fa-search "></i>
-            </a>
-        </div>
-        <div class="dock-item">
-            <a href="#" class="dock-link">
-                <i class="fas fa-question-circle "></i>
-            </a>
-        </div>
-        <div class="dock-item">
-            <button class="btn btn-default dock-link" id="user-menu-toggle">
-                <i class="fas fa-user "></i>
-            </button>
-        </div>
+  <div class="leftnav-dock">
+    <div class="logo dock-item">
+      <a href="{% url 'index' %}" class="dock-link">
+        <i class="fas fa-newspaper"></i>
+      </a>
     </div>
-    <div class="user-menu shadow hidden">
-        <ul>
-            <li class="user-menu__item">
-                <a href="{% url 'account' %}" class="user-menu__link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <span class="user-menu__text">Thông tin cá nhân</span>
-                </a>
-            </li>
-            <li class="user-menu__item">
-                <a href="{% url 'organize_topic' %}" class="user-menu__link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-rss"></i>
-                    </span>
-                    <span class="user-menu__text">Quản lý chủ đề</span>
-                </a>
-            </li>
-            <li class="user-menu__item">
-                <a href="{% url 'change_password' %}" class="user-menu__link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-key"></i>
-                    </span>
-                    <span class="user-menu__text">Thay đổi mật khẩu</span>
-                </a>
-            </li>
-            <li class="user-menu__item">
-                <a href="{% url 'signout' %}" class="user-menu__link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </span>
-                    <span class="user-menu__text">Đăng xuất</span>
-                </a>
-            </li>
-        </ul>
+    <div class="dock-item">
+      <a href="#" class="dock-link">
+        <i class="fas fa-plus"></i>
+      </a>
     </div>
-    <div class="leftnav-list">
-        <div class="leftnav-list__nav">
-            <div class="leftnav-item" id="newest">
-                <a href="{% url 'index' %}" class="leftnav-link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-newspaper"></i>
-                    </span>
-                    <span class="leftnav-item__text">
-                        Mới nhất
-                    </span>
-                </a>
-            </div>
-            <div class="leftnav-item" id="saved-article">
-                <a href="{% url 'saved' %}" class="leftnav-link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-bookmark"></i>
-                    </span>
-                    <span class="leftnav-item__text">
-                        Tin đã lưu
-                    </span>
-                </a>
-            </div>
-            <div class="leftnav-item" id="history">
-                <a href="{% url 'history' %}" class="leftnav-link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-history"></i>
-                    </span>
-                    <span class="leftnav-item__text">
-                        Tin đã xem
-                    </span>
-                </a>
-            </div>
-        </div>
-        <div class="leftnav-list__feed">
-            <div class="leftnav-list__heading">
-                Feeds
-            </div>
-            {% for category in request.user.following.all %}
-            <div class="leftnav-item" id="category-{{ category.pk }}">
-                <a href="{% url 'category-articles' category.slug %}" class="leftnav-link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-rss"></i>
-                    </span>
-                    <span class="leftnav-item__text">
-                        {{ category.name }}
-                    </span>
-                </a>
-            </div>
-            {% endfor %}
-            <div class="leftnav-item">
-                <a href="{% url 'add_topic' %}" class="leftnav-link">
-                    <span class="leftnav-item__icon">
-                        <i class="fas fa-plus-circle"></i>
-                    </span>
-                    <span class="leftnav-item__text">
-                        Thêm 
-                    </span>
-                </a>
-            </div>
-        </div>
+    <div class="dock-item">
+      <a href="{% url 'search_articles' %}" class="dock-link">
+        <i class="fas fa-search"></i>
+      </a>
     </div>
+    <div class="dock-item">
+      <a href="#" class="dock-link">
+        <i class="fas fa-question-circle"></i>
+      </a>
+    </div>
+    <div class="dock-item">
+      <button class="btn btn-default dock-link" id="user-menu-toggle">
+        <i class="fas fa-user"></i>
+      </button>
+    </div>
+  </div>
+  <div class="user-menu shadow hidden">
+    <ul>
+      <li class="user-menu__item">
+        <a href="{% url 'account' %}" class="user-menu__link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-user"></i>
+          </span>
+          <span class="user-menu__text">Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="user-menu__item">
+        <a href="{% url 'organize_topic' %}" class="user-menu__link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-rss"></i>
+          </span>
+          <span class="user-menu__text">Quản lý chủ đề</span>
+        </a>
+      </li>
+      <li class="user-menu__item">
+        <a href="{% url 'change_password' %}" class="user-menu__link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-key"></i>
+          </span>
+          <span class="user-menu__text">Thay đổi mật khẩu</span>
+        </a>
+      </li>
+      <li class="user-menu__item">
+        <a href="{% url 'signout' %}" class="user-menu__link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </span>
+          <span class="user-menu__text">Đăng xuất</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="leftnav-list">
+    <div class="leftnav-list__nav">
+      <div class="leftnav-item" id="newest">
+        <a href="{% url 'index' %}" class="leftnav-link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-newspaper"></i>
+          </span>
+          <span class="leftnav-item__text">
+            Mới nhất
+          </span>
+        </a>
+      </div>
+      <div class="leftnav-item" id="saved-article">
+        <a href="{% url 'saved' %}" class="leftnav-link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-bookmark"></i>
+          </span>
+          <span class="leftnav-item__text">
+            Tin đã lưu
+          </span>
+        </a>
+      </div>
+      <div class="leftnav-item" id="history">
+        <a href="{% url 'history' %}" class="leftnav-link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-history"></i>
+          </span>
+          <span class="leftnav-item__text">
+            Tin đã xem
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="leftnav-list__feed">
+      <div class="leftnav-list__heading">
+        Feeds
+      </div>
+      {% for category in request.user.following.all %}
+      <div class="leftnav-item" id="category-{{ category.pk }}">
+        <a
+          href="{% url 'category_articles' category.slug %}"
+          class="leftnav-link"
+        >
+          <span class="leftnav-item__icon">
+            <i class="fas fa-rss"></i>
+          </span>
+          <span class="leftnav-item__text">
+            {{ category.name }}
+          </span>
+        </a>
+      </div>
+      {% endfor %}
+      <div class="leftnav-item">
+        <a href="{% url 'add_topic' %}" class="leftnav-link">
+          <span class="leftnav-item__icon">
+            <i class="fas fa-plus-circle"></i>
+          </span>
+          <span class="leftnav-item__text">
+            Thêm
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $('#{{selected_leftnav_item}}').addClass('leftnav-item__selected');
-    })
+  $(document).ready(function () {
+    $("#{{selected_leftnav_item}}").addClass("leftnav-item__selected");
+  });
 </script>

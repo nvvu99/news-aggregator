@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from account.views import SigninView, SignupView
+import jet
+import jet.dashboard
 
 
 urlpatterns = [
+    path('jet/', include('jet.urls')),  # jet URLS
+    path('jet/dashboard', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
     path('', include('account.urls')),
     path('news/', include('news.urls')),
