@@ -1,7 +1,5 @@
 # News Aggregator web app
 
----
-
 [ongoing]
 
 - This project used Django and Scrapy to create a News Aggregator web app
@@ -9,7 +7,7 @@
 
 ### Screenshot
 
-[![alt text](https://github.com/nvvu99/news-aggregator/blob/master/screenshot.png "screenshot")]
+![alt text](https://github.com/nvvu99/news-aggregator/blob/master/screenshot.png "screenshot")
 
 ### Features
 
@@ -21,9 +19,14 @@
 
 ### Run this project
 
-- Clone this project: `git clone https://github.com/nvvu99/news-aggregator.git`
+- Clone this project:
+
+```console
+[niar@niar niar] git clone https://github.com/nvvu99/news-aggregator.git
+```
+
 - Create a database in MySQL using command: `create database news character set utf8`
-- Open the file my.cnf an change the user, password respectively to your database
+- Open the file `my.cnf` an change the user, password respectively to your database
   > [client]
   > #protocol = tcp
   > host = localhost
@@ -31,26 +34,50 @@
   > user = prod
   > password = 0000
   > default-character-set = utf8
-- `cd` into `NewsAggregator`: `cd news-aggregator`
+- `cd` into `NewsAggregator`:
+
+```
+[niar@niar niar] cd news-aggregator
+[niar@niar news-aggregator]
+```
+
 - (Optional)Install python virtual environment:
 
 ```
-virtualenv venv
-source ./venv/bin/activate
+[niar@niar news-aggregator] virtualenv venv
+[niar@niar news-aggregator] source ./venv/bin/activate
+(venv) [niar@niar news-aggregator]
 ```
 
-- Install required libraries: `pip install -r requirements.txt`
-- Initial the database:
+- Install all requirements:
 
 ```
-python manage.py migrate
-python manage.py loaddata initial_data.json
+(venv) [niar@niar news-aggregator] pip install -r requirements.txt
 ```
 
-- `cd` into `NewsSraper`: `cd NewsScraper`
-- Scrape the articles data: `scrapy crawl`
-- `cd ..`
-- Run webserver: `python manage.py runserver`
+- Setup Django
+
+```
+(venv) [niar@niar news-aggregator] python manage.py migrate
+(venv) [niar@niar news-aggregator] python manage.py loaddata initial_data.json
+```
+
+- Setup Scrapy
+
+```
+(venv) [niar@niar news-aggregator] cd NewsScraper
+(venv) [niar@niar NewsScraper] nohup scrapyd > scrapyd.log &
+(venv) [niar@niar NewsScraper] scrapyd-deploy
+(venv) [niar@niar NewsScraper] cd ..
+(venv) [niar@niar news-aggregator] python crawl.py
+```
+
+- Run webserver:
+
+```
+(venv) [niar@niar news-aggregator] python manage.py runserver
+```
+
 - Open your browser and go to [http://localhost:8000](http://localhost:8000)
 
 ### The NewsScraper module

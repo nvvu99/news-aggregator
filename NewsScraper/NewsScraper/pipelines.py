@@ -9,7 +9,7 @@ from .items import ArticleItem
 from django.utils.text import slugify
 
 
-class NewsscraperPipeline(object):
+class NewsScraperPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, ArticleItem):
             article = Article.objects.update_or_create(
