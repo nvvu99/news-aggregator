@@ -1,8 +1,16 @@
-# Python bytecode
 *.pyc
 
 # Python virtual env
 venv
 
-
+# Django sent emails requesting to reset user password
 sent_emails
+
+# Scrapyd deployment
+build
+dbs
+eggs
+project.egg-info
+*.log
+logs
+twistd.pid
