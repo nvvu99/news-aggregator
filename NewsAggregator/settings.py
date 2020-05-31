@@ -39,11 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
     'news',
     'account',
-    'api',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'NewsAggregator.urls'
@@ -142,20 +138,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 25,
-    #     'DEFAULT_PERMISSION_CLASSES': (
-    #         'rest_framework.permissions.IsAuthenticated',
-    #     ),
-    #     'DEFAULT_AUTHENTICATION_CLASSES': (
-    #         'rest_framework.authentication.TokenAuthentication',
-    #     ),
-}
-
-# CSRF_COOKIE_NAME = "csrftoken"
 
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = False
@@ -169,16 +151,6 @@ LOGIN_URL = '/login'
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
-# REST_AUTH_SERIALIZERS = {
-#     'USER_DETAILS_SERIALIZER': 'user.serializers.UserSerializer',
-#     'TOKEN_SERIALIZER': 'user.serializers.TokenSerializer'
-# }
-
-# REST_AUTH_REGISTER_SERIALIZERS = {
-#     'REGISTER_SERIALIZER': 'user.serializers.SignupSerializer',
-# }
-
-# django-jet configurations
 JET_DEFAULT_THEME = 'light-violet'
 JET_SIDE_MENU_COMPACT = True
 JET_THEMES = [
