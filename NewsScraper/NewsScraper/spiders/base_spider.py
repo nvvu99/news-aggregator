@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst
-from ...items import ArticleItem
+from NewsScraper.items import ArticleItem
 
 
 class BaseSpider(scrapy.Spider):
