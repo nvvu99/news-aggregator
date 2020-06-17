@@ -96,6 +96,7 @@ class SearchArticlesView(BaseView):
     extra_context = {
         'title': _('Tìm kiếm')
     }
+
     def get(self, request, *args, **kwargs):
         self.search_articles_query = Q(pk=-1)
         if request.GET.get('q') is not None:

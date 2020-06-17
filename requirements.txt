@@ -2,6 +2,4 @@ django==3.0.6
 django-3-jet==1.0.8
 mysqlclient==1.4.6
 scrapy==2.1.0
-scrapyd==1.2.1
-scrapyd-client==1.1.0
-python-scrapyd-api==2.1.2
+schedule==0.6.0

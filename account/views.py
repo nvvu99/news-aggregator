@@ -133,6 +133,7 @@ class SavedArticleView(BaseView):
         'title': _('Tin đã lưu'),
         'selected_leftnav_item': 'saved-article',
     }
+
     def get_queryset(self):
         return self.request.user.saved_articles.all()
 
@@ -143,6 +144,7 @@ class HistoryView(BaseView):
         'selected_leftnav_item': 'saved-article',
     }
     title = _('Tin đã xem')
+
     def get_queryset(self):
         return self.request.user.hửstory.all()
 

@@ -16,8 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from account.views import LoginView, RegisterView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-import jet
-import jet.dashboard
 
 
 urlpatterns = [

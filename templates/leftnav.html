@@ -6,12 +6,12 @@
             </a>
         </div>
         <div class="dock-item">
-            <a href="#" class="dock-link">
+            <a href="{% url 'topic_add' %}" class="dock-link">
                 <i class="fas fa-plus"></i>
             </a>
         </div>
         <div class="dock-item">
-            <a href="{% url 'articles_search' %}" class="dock-link">
+            <a href="#" class="dock-link">
                 <i class="fas fa-search"></i>
             </a>
         </div>
@@ -129,6 +129,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        $("#{{selected_leftnav_item}}").addClass("leftnav-item__selected");
+        $('#{{selected_leftnav_item}}').addClass('leftnav-item__selected');
     });
 </script>
