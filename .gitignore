@@ -14,3 +14,5 @@ project.egg-info
 *.log
 logs
 twistd.pid
+
+db.sqlite3
