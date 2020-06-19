@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Article, Category, Publisher
-from account.models import User
+from account.models import User, History
 from django.views.generic import ListView
 from django.views.generic.base import RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -23,7 +23,7 @@ class BaseView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
 
     model = Article
-    paginate_by = 25
+    paginate_by = 20
     template_name = 'index.html'
     context_object_name = 'articles'
 
@@ -46,7 +46,7 @@ class IndexView(BaseView):
     }
 
     def get_queryset(self):
-        following = self.request.user.following.all()
+        following = self.request.user.following_categories.all()
         query = Q()
         for category in following:
             query |= Q(category_id=category.pk)
@@ -87,8 +87,10 @@ class ArticleDetailView(RedirectView):
         article = Article.objects.get(slug=self.kwargs['slug'])
         user = self.request.user
         if user is not None:
-            user.history.remove(article)
-            user.history.add(article)
+            History.objects.update_or_create(
+                user = user,
+                article = article,
+            )
         return article.original_url
 
 

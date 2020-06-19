@@ -1,1 +1,1 @@
-web: gunicorm NewsAggregator.wsgi --log-file -
+web: gunicorn NewsAggregator.wsgi --log-file -

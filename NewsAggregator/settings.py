@@ -82,25 +82,19 @@ WSGI_APPLICATION = 'NewsAggregator.wsgi.application'
 if DEBUG:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.mysql',
+            # 'HOST': 'mariadb',
+            # 'PORT': '3306',
+            # 'USER': 'niar',
+            # 'PASSWORD': '0000',
+            # 'NAME': 'news',
+            'OPTIONS': {
+                # 'read_default_file': '/home/niar/Projects/WebApps/NewsAggregator/NewsAggregator/my.cnf',
+                'read_default_file': os.path.join(BASE_DIR, 'my.cnf'),
+            }
         }
     }
 else: 
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         # 'HOST': 'mariadb',
-    #         # 'PORT': '3306',
-    #         # 'USER': 'niar',
-    #         # 'PASSWORD': '0000',
-    #         # 'NAME': 'news',
-    #         'OPTIONS': {
-    #             # 'read_default_file': '/home/niar/Projects/WebApps/NewsAggregator/NewsAggregator/my.cnf',
-    #             'read_default_file': os.path.join(BASE_DIR, 'my.cnf'),
-    #         }
-    #     }
-    # }
     import django_heroku
     django_heroku.settings(locals())
 

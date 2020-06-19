@@ -8,7 +8,7 @@ $(document).ready(function () {
     const currentButton = $(this);
     $.ajax({
       type: 'GET',
-      url: '/savearticle/',
+      url: '/account/article-save/',
       data: { article_id: articleId },
       success: function (data, status, xhr) {
         if (xhr.status === 201) {

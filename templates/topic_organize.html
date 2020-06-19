@@ -10,17 +10,17 @@
         <div class="top-headerbar">
             <h1>Quản lý chủ đề</h1>
         </div>
-        {% if form.fields.following.choices|length > 0 %}
+        {% if form.fields.following_categories.choices|length > 0 %}
         <form action="" method="post">
             <h5>Bỏ chọn chủ đề bạn không muốn theo dõi</h5>
             {% csrf_token %}
-            {% for choice_value, choice_name in form.fields.following.choices %}
+            {% for choice_value, choice_name in form.fields.following_categories.choices %}
                 <div class="form-check">
                     <label class="form-check-label">
                         <input
                             type="checkbox" 
                             class="form-check-input" 
-                            name="{{ form.following.name }}" 
+                            name="{{ form.following_categories.name }}" 
                             id="" 
                             value="{{ choice_value }}"
                             checked

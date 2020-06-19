@@ -99,7 +99,7 @@
             <div class="leftnav-list__heading">
                 Feeds
             </div>
-            {% for category in request.user.following.all %}
+            {% for category in request.user.following_categories.all %}
             <div class="leftnav-item" id="category-{{ category.pk }}">
                 <a
                     href="{% url 'category_articles' category.slug %}"

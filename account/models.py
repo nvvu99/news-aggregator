@@ -1,6 +1,6 @@
 from django.db import models
 from news.models import Article, Category
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from .validators import UsernameValidator
 from django.utils.translation import gettext, gettext_lazy as _
 
@@ -20,7 +20,6 @@ class User(AbstractUser):
             'unique': _("Username đã tồn tại."),
         },
     )
-    
     email = models.EmailField(
         _('email'),
         max_length = 254,
@@ -33,18 +32,24 @@ class User(AbstractUser):
         upload_to = 'user-avatar/',
         blank = True,
     )
-    history = models.ManyToManyField(
+    viewed_articles = models.ManyToManyField(
         Article,
-        related_name = 'history',
+        through = 'History',
+        through_fields = ('user', 'article'),
+        related_name = 'viewed_articles',
         blank = True,
     )
     saved_articles = models.ManyToManyField(
         Article,
+        through = 'SavedArticle',
+        through_fields = ('user', 'article'),
         related_name = 'saved_articles',
         blank = True,
     )
-    following = models.ManyToManyField(
+    following_categories = models.ManyToManyField(
         Category,
+        through = 'FollowingCategory',
+        through_fields = ('user', 'category'),
         blank = True,
     )
 
@@ -53,3 +58,57 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'users'
+
+
+class History(models.Model):
+    user = models.ForeignKey(
+        User, 
+        on_delete = models.CASCADE, 
+    )
+    article = models.ForeignKey(
+        Article, 
+        on_delete = models.CASCADE, 
+    )
+    last_view = models.DateField(
+        auto_now=True, 
+    )
+
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.article)
+
+    class Meta:
+        unique_together = (('user', 'article'),)
+
+
+class SavedArticle(models.Model):
+    user = models.ForeignKey(
+        User, 
+        on_delete = models.CASCADE, 
+    )
+    article = models.ForeignKey(
+        Article, 
+        on_delete = models.CASCADE, 
+    )
+
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.article)
+
+    class Meta:
+        unique_together = (('user', 'article'),)
+
+
+class FollowingCategory(models.Model):
+    user = models.ForeignKey(
+        User, 
+        on_delete = models.CASCADE, 
+    )
+    category = models.ForeignKey(
+        Category, 
+        on_delete = models.CASCADE, 
+    )
+
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.category)
+
+    class Meta:
+        unique_together = (('user', 'category'),)

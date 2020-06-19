@@ -22,7 +22,7 @@ urlpatterns = [
     path('jet/', include('jet.urls')),  # jet URLS
     path('jet/dashboard', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
-    path('account', include('account.urls')),
+    path('account/', include('account.urls')),
     path('news/', include('news.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),

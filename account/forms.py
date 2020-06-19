@@ -140,33 +140,39 @@ class PasswordChangeForm(SetPasswordForm):
 class TopicOrganizeForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.following = user.following.all()
-        self.fields['following'].queryset = self.following
+        self.following_categories = user.following_categories.all()
+        self.fields['following_categories'].queryset = self.following_categories
 
     class Meta:
         model = User
-        fields = ('following', )
+        fields = ('following_categories', )
         widgets = {
-            'following': forms.CheckboxSelectMultiple(),
+            'following_categories': forms.CheckboxSelectMultiple(),
         }
 
 
 class TopicAddForm(TopicOrganizeForm):
+    adding_categories = forms.ModelMultipleChoiceField(queryset=None)
+
     def __init__(self, user, *args, **kwargs):
         super().__init__(user, *args, **kwargs)
         following_query = Q()
 
-        for category in self.following:
+        for category in self.following_categories:
             following_query |= Q(pk=category.pk)
 
-        self.fields['following'].queryset = Category.objects.exclude(
-            following_query)
+        self.fields['adding_categories'].queryset = Category.objects.exclude(following_query)
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['following'] = cleaned_data.get(
-            'following').union(self.following)
+        cleaned_data['following_categories'] = self.following_categories.union(cleaned_data.get('adding_categories'))
         return cleaned_data
+
+    class Meta(TopicOrganizeForm.Meta):
+        fields = ('following_categories', 'adding_categories', )
+        widgets = {
+            'adding_categories': forms.CheckboxSelectMultiple()
+        }
 
 
 class UserUpdateForm(forms.ModelForm):

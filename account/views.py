@@ -1,7 +1,15 @@
-from .models import User
+from .models import User, History
 from news.models import Category, Article
 from news.views import BaseView
-from .forms import *
+from .forms import (
+    LoginForm,
+    RegisterForm,
+    SetPasswordForm,
+    PasswordChangeForm,
+    TopicAddForm,
+    TopicOrganizeForm,
+    UserUpdateForm,
+)
 
 from django.views import View
 from django.views.generic.edit import FormView, CreateView, UpdateView
@@ -146,7 +154,7 @@ class HistoryView(BaseView):
     title = _('Tin đã xem')
 
     def get_queryset(self):
-        return self.request.user.hửstory.all()
+        return self.request.user.viewed_articles.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -185,9 +193,6 @@ class TopicAddView(TopicOrganizeView):
 class SaveArticle(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
-    def post(self, request, *args, **kwargs):
-        return HttpResponseNotAllowed(['POST'], content='Not allowed!')
-
     def get(self, request, *args, **kwargs):
         if 'article_id' in request.GET:
             article_id = request.GET['article_id']
@@ -197,7 +202,7 @@ class SaveArticle(LoginRequiredMixin, View):
                 return HttpResponseNotFound('Article does not exist!')
             else:
                 user = request.user
-                if (article not in user.saved_articles.all()):
+                if article not in user.saved_articles.all():
                     user.saved_articles.add(article)
                     return HttpResponse('Save successfully!', status=201)
                 else:
