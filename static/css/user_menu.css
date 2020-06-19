@@ -1,0 +1,40 @@
+.user-menu {
+  background-color: white;
+  border: 1px solid var(--light-grey);
+  padding: 1em 0;
+  display: flex;
+  flex-direction: column;
+  width: 15em;
+  position: fixed;
+  left: var(--leftnav-dock-width);
+  bottom: 2em;
+}
+
+.user-menu.hidden {
+  display: none;
+}
+
+.user-menu ul {
+  list-style: none;
+  margin: 0;
+}
+
+.user-menu__item {
+  padding-left: 1em;
+  font-size: 0.9em;
+}
+
+.user-menu__item:hover {
+  background-color: var(--bg-hover-color);
+}
+
+.user-menu__item a:hover {
+  text-decoration: none;
+}
+
+.user-menu__link {
+  height: 3em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}

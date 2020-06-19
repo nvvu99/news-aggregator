@@ -1,61 +1,61 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ title }}
+  {{ title }}
 {% endblock title %}
 
 {% block content %}
-    {% include 'leftnav.html' %}
-    <main>
-        <div class="top-headerbar">
-            <h1>Account</h1>
+  {% include 'leftnav.html' %}
+  <main>
+    <div class="top-headerbar">
+      <h1>Thông tin cá nhân</h1>
+    </div>
+    <form class="col-lg-6 page-center" action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="{{ form.last_name.id_for_label }}">
+            <strong>{{ form.last_name.label }}</strong>
+          </label>
+          <input 
+            type="text" 
+            name="{{ form.last_name.name }}" 
+            id="{{ form.last_name.id_for_label }}" 
+            class="form-control"
+            value="{{ form.last_name.value }}"
+          >
         </div>
-        <form class="col-lg-6 page-center" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-row">
-                <div class="form-group col">
-                    <label 
-                        for="{{ form.last_name.id_for_label }}"
-                    >{{ form.last_name.label }}</label>
-                    <input 
-                        type="text" 
-                        name="{{ form.last_name.name }}" 
-                        id="{{ form.last_name.id_for_label }}" 
-                        class="form-control"
-                        value="{{ form.last_name.value }}"
-                    >
-                </div>
-                <div class="form-group col">
-                    <label 
-                        for="{{ form.first_name.id_for_label }}"
-                    >{{ form.first_name.label }}</label>
-                    <input 
-                        type="text" 
-                        name="{{ form.first_name.name }}" 
-                        id="{{ form.first_name.id_for_label }}" 
-                        class="form-control"
-                        value="{{ form.first_name.value }}"
-                    >
-                </div>
-            </div>
-            <div class="form-group">
-                <label 
-                    for="{{ form.avatar.id_for_label }}">
-                {{ form.avatar.label }}</label>
-                <input 
-                    type="file" 
-                    class="form-control-file" 
-                    name="{{ form.avatar.name }}" 
-                    id="{{ form.avatar.id_for_label }} "
-                    value="{{ form.avatar.value }}" 
-                >
-            </div>
-            {% for message in messages %}
-                <div class="alert alert-success" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success" style="width: 100%">Thay đổi</button>
-        </form>
-    </main>
+        <div class="form-group col">
+          <label for="{{ form.first_name.id_for_label }}">
+            <strong>{{ form.first_name.label }}</strong>
+          </label>
+          <input 
+            type="text" 
+            name="{{ form.first_name.name }}" 
+            id="{{ form.first_name.id_for_label }}" 
+            class="form-control"
+            value="{{ form.first_name.value }}"
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="{{ form.avatar.id_for_label }}">
+          <strong>{{ form.avatar.label }}</strong>
+        </label>
+        <input 
+          type="file" 
+          class="form-control-file" 
+          name="{{ form.avatar.name }}" 
+          id="{{ form.avatar.id_for_label }} "
+          value="{{ form.avatar.value }}" 
+        >
+      </div>
+      {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-success" style="width: 100%">Thay đổi</button>
+    </form>
+  </main>
 {% endblock %}

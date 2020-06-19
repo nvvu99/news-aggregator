@@ -5,40 +5,51 @@
 {% endblock title %}
 
 {% block content %}
-    {% include 'leftnav.html' %}
-    <main>
-        <div class="top-headerbar">
-            <h1>Quản lý chủ đề</h1>
+  {% include 'leftnav.html' %}
+  <main>
+    {% include 'main_header.html' %}
+    <div class="content container">
+      {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
         </div>
-        {% if form.fields.following_categories.choices|length > 0 %}
+      {% endfor %}
+
+      {% if form.fields.following_categories.choices|length > 0 %}
         <form action="" method="post">
-            <h5>Bỏ chọn chủ đề bạn không muốn theo dõi</h5>
-            {% csrf_token %}
-            {% for choice_value, choice_name in form.fields.following_categories.choices %}
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input
-                            type="checkbox" 
-                            class="form-check-input" 
-                            name="{{ form.following_categories.name }}" 
-                            id="" 
-                            value="{{ choice_value }}"
-                            checked
-                        >
-                        {{ choice_name }}
-                    </label>
-                </div>
-            {% endfor %}
-            
-            {% for message in messages %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
+          <h5>Bỏ chọn chủ đề bạn không muốn theo dõi</h5>
+          {% csrf_token %}
+          <div class="form-check select-all">
+            <label class="form-check-label switch">
+              <input
+                type="checkbox" 
+                class="form-check-input" 
+                checked
+              >
+                <span class="slider round"></span>
+            </label>
+          </div>
+          {% for category in form.fields.following_categories.queryset %}
+            <div class="form-check option">
+              <label class="form-check-label switch">
+                <input
+                  type="checkbox" 
+                  class="form-check-input" 
+                  name="{{ form.following_categories.name }}" 
+                  id="" 
+                  value="{{ category.id }}"
+                  checked
+                >
+                <span class="slider round"></span>
+                <strong>{{ category.name }}</strong>
+              </label>
             </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Xác nhận</button>
+          {% endfor %}
+          <button type="submit" class="btn btn-success submit">Xác nhận</button>
         </form>
-        {% else %}
+      {% else %}
         <h5 style="margin: 3em 3em">Bạn đang không theo dõi chủ đề nào</h3>
-        {% endif %}
-    </main>
+      {% endif %}
+    </div>
+  </main>
 {% endblock content %}

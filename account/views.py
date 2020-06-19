@@ -121,7 +121,7 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     login_url = reverse_lazy('login')
     template_name = 'account.html'
     form_class = UserUpdateForm
-    success_url = reverse_lazy('account')
+    success_url = reverse_lazy('profile')
     success_message = "Thay đổi thông tin thành công"
     extra_context = {
         'title': _('Thay đổi thông tin')

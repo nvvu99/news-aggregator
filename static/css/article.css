@@ -1,0 +1,83 @@
+article {
+  margin-bottom: 5em;
+}
+
+.thumb img {
+  max-width: 100%;
+}
+
+.article-content {
+  text-align: justify;
+  position: relative;
+}
+
+.article-content__title {
+  color: var(--article-title-color);
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  margin-right: 2em;
+  margin-left: 0;
+}
+
+.article-content__title:hover {
+  text-decoration: none;
+  color: var(--article-title-hover-color);
+}
+
+.article-content__metadata {
+  /* font-size: 0.8em; */
+  color: var(--text-secondary-color);
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.article-content__publisher-name {
+  font-size: 0.8em;
+}
+
+.article-content__sapo {
+  font-size: 0.8em;
+  color: var(--text-secondary-color);
+  overflow: hidden;
+  margin-bottom: 0.5em;
+}
+
+button.save-for-later {
+  padding-top: 0;
+  color: var(--grey);
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: none;
+}
+
+button.save-for-later:focus {
+  border: none;
+}
+
+.pagination > li > a {
+  background-color: white;
+  color: var(--article-title-color);
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+  color: var(--article-title-color);
+  background-color: #eee;
+  border-color: #ddd;
+}
+
+.pagination > .active > a {
+  color: white !important;
+  background-color: var(--article-title-color) !important;
+  border: solid 1px var(--article-title-color);
+  box-shadow: none !important;
+}
+
+.pagination > .active > a:hover {
+  background-color: var(--article-title-hover-color);
+  border: solid 1px var(--article-title-hover-color);
+}
+

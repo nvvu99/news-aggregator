@@ -24,4 +24,25 @@ $(document).ready(function () {
       },
     });
   });
+
+  $('.select-all').on('change', 'input[type="checkbox"]', function () {
+    const checked = $(this).prop('checked');
+    $(this)
+      .parents('.select-all')
+      .siblings()
+      .each(function () {
+        $(this).find('input[type="checkbox"]').prop('checked', checked);
+      });
+  });
+
+  $('.option').on('change', 'input[type="checkbox"]', function () {
+    const checked = $(this).prop('checked');
+    if (!checked) {
+      $(this)
+        .parents('.option')
+        .siblings('.select-all')
+        .find('input[type="checkbox"]')
+        .prop('checked', false);
+    }
+  });
 });

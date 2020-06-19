@@ -13,6 +13,10 @@ class Category(models.Model):
         blank = True,
         editable = True,
         )
+    icon = models.ImageField(
+        upload_to = 'icon/categories/',
+        blank = True,
+    )
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

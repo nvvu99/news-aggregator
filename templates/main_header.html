@@ -1,0 +1,36 @@
+<div class="top-headerbar"></div>
+<div class="header d-flex flex-row align-items-center justify-content-between">
+  <h1>{{ title }}</h1>
+  <div class="search-form">
+    <form class="form-inline" action="{% url 'articles_search' %}">
+      <div class="form-group">
+        <button type="submit" class="btn btn-default search-submit">
+          <i class="fas fa-search"></i>
+        </button>
+        <input
+          type="text"
+          name="q"
+          class="form-control search-input"
+          placeholder="Tìm kiếm"
+          value="{% if request.GET.q is not None %}{{ request.GET.q }}{% endif %}"
+        />
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  window.onscroll = function () {
+    addSticky();
+  };
+
+  var header = document.querySelector(".header");
+  var sticky = header.offsetTop;
+
+  function addSticky() {
+    if (window.pageYOffset > sticky) {
+      header.classList.add("sticky");
+    } else {
+      header.classList.remove("sticky");
+    }
+  }
+</script>

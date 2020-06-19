@@ -6,15 +6,17 @@ from .models import Article, Category, Publisher
 class CategoryAdmin(admin.ModelAdmin):
     fields = (
         'name',
-        )
+        'icon',
+    )
     list_display = (
         'id', 
         'name',
+        'icon',
         'slug',
-        )
+    )
     search_fields = (
         'name', 
-        )
+    )
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -27,7 +29,7 @@ class ArticleAdmin(admin.ModelAdmin):
         'thumb',
         'body', 
         'published_date',
-        )
+    )
     list_display = (
         'id', 
         'title',
@@ -36,30 +38,30 @@ class ArticleAdmin(admin.ModelAdmin):
         'publisher_id',
         'original_url',
         'thumb'
-        )
+    )
     search_fields = (
         'title',
-        )
+    )
     list_filter = (
         'category_id',
         'publisher_id',
         'published_date',
-        )
+    )
 
 
 class PublisherAdmin(admin.ModelAdmin):
     fields = (
         'name',
         'url',
-        )
+    )
     list_display = (
         'id',
         'name',
         'slug',
-        )
+    )
     search_fields = (
         'name',
-        )
+    )
 
 
 admin.site.register(Article, ArticleAdmin)

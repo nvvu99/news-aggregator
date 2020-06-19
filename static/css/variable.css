@@ -1,0 +1,16 @@
+:root {
+  --bg-primary-color: white;
+  --bg-secondary-color: #f6f7f8;
+  --bg-hover-color: #efefef;
+  --text-primary-color: #333333;
+  --text-secondary-color: #888;
+  --grey: #888;
+  --light-grey: #ccc;
+  --selected-color: #2bb24c;
+  --article-title-color: #4caf50;
+  --article-title-hover-color: #2e7d32;
+  --leftnav-dock-width: calc(3em + 1px);
+  --leftnav-list-width: 17em;
+  --leftnav-width: calc(3em + 1px + 17em);
+}
+
