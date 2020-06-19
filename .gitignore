@@ -3,6 +3,10 @@
 # Python virtual env
 venv
 
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
+
 # Django sent emails requesting to reset user password
 sent_emails
 
