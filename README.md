@@ -49,9 +49,7 @@ default-character-set = utf8
 (venv) [niar@niar news-aggregator] pip install -r requirements.txt
 (venv) [niar@niar news-aggregator] python manage.py migrate
 (venv) [niar@niar news-aggregator] python manage.py loaddata initial_data.json
-(venv) [niar@niar news-aggregator] cd NewsScraper
-(venv) [niar@niar NewsScraper] scrapy crawl
-(venv) [niar@niar NewsScraper] cd ..
+(venv) [niar@niar news-aggregator] python manage.py crawl
 (venv) [niar@niar news-aggregator] python manage.py runserver
 ```
 
