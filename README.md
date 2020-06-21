@@ -1,7 +1,5 @@
 # News Aggregator web app
 
-[ongoing]
-
 - This project used Django and Scrapy to create a News Aggregator web app
 - Database used: MySQL
 
@@ -27,58 +25,33 @@
 
 - Create a database in MySQL using command: `create database news character set utf8`
 - Open the file `my.cnf` an change the user, password respectively to your database
-  > [client]
-  > #protocol = tcp
-  > host = localhost
-  > database = news
-  > user = prod
-  > password = 0000
-  > default-character-set = utf8
-- `cd` into `NewsAggregator`:
+```
+[client]
+#protocol = tcp
+host = localhost
+database = news
+user = prod
+password = 0000
+default-character-set = utf8
+```
+
+- Run the following commands
 
 ```
 [niar@niar niar] cd news-aggregator
 [niar@niar news-aggregator]
-```
-
-- (Optional)Install python virtual environment:
-
-```
 [niar@niar news-aggregator] virtualenv venv
 [niar@niar news-aggregator] source ./venv/bin/activate
-(venv) [niar@niar news-aggregator]
-```
-
-- Install all requirements:
-
-```
 (venv) [niar@niar news-aggregator] pip install -r requirements.txt
-```
-
-- Setup Django
-
-```
 (venv) [niar@niar news-aggregator] python manage.py migrate
 (venv) [niar@niar news-aggregator] python manage.py loaddata initial_data.json
-```
-
-- Setup Scrapy
-
-```
 (venv) [niar@niar news-aggregator] cd NewsScraper
-(venv) [niar@niar NewsScraper] nohup scrapyd > scrapyd.log &
-(venv) [niar@niar NewsScraper] scrapyd-deploy
+(venv) [niar@niar NewsScraper] scrapy crawl
 (venv) [niar@niar NewsScraper] cd ..
-(venv) [niar@niar news-aggregator] python crawl.py
-```
-
-- Run webserver:
-
-```
 (venv) [niar@niar news-aggregator] python manage.py runserver
 ```
 
-- Open your browser and go to [http://localhost:8000](http://localhost:8000)
+- Open your browser and go to [http://localhost:8000/news](http://localhost:8000/news)
 
 ### The NewsScraper module
 
