@@ -15,6 +15,10 @@
 - Save article for read later
 - News web scraping (in folder NewsScraper)
 
+### Demo
+
+The demo of this project is here: [vnfeed.herokuapp.com/news](https://vnfeed.herokuapp.com/news)
+
 ### Run this project
 
 - Clone this project:
