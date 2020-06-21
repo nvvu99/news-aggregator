@@ -42,20 +42,19 @@ $(document).ready(function () {
       .siblings('.select-all')
       .find('input[type="checkbox"]');
 
-    var allChecked = true;
+    selectAllInput.prop('checked', true);
     $(this)
-      .parents('option')
+      .parents('.option')
+      .siblings('.option')
       .each(function () {
         if (!$(this).find('input[type="checkbox"]').prop('checked')) {
-          allChecked = false;
+          console.log(false);
+          selectAllInput.prop('checked', false);
         }
       });
-    console.log(allChecked);
 
     if (!checked) {
       selectAllInput.prop('checked', false);
-    } else if (allChecked) {
-      selectAllInput.prop('checked', true);
     }
   });
 });
