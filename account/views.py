@@ -148,10 +148,9 @@ class SavedArticleView(BaseView):
 
 class HistoryView(BaseView):
     extra_context = {
-        'title': _('Tin đã lưu'),
+        'title': _('Tin đã xem'),
         'selected_leftnav_item': 'saved-article',
     }
-    title = _('Tin đã xem')
 
     def get_queryset(self):
         return self.request.user.viewed_articles.all()

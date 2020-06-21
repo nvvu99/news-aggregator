@@ -37,12 +37,25 @@ $(document).ready(function () {
 
   $('.option').on('change', 'input[type="checkbox"]', function () {
     const checked = $(this).prop('checked');
+    const selectAllInput = $(this)
+      .parents('.option')
+      .siblings('.select-all')
+      .find('input[type="checkbox"]');
+
+    var allChecked = true;
+    $(this)
+      .parents('option')
+      .each(function () {
+        if (!$(this).find('input[type="checkbox"]').prop('checked')) {
+          allChecked = false;
+        }
+      });
+    console.log(allChecked);
+
     if (!checked) {
-      $(this)
-        .parents('.option')
-        .siblings('.select-all')
-        .find('input[type="checkbox"]')
-        .prop('checked', false);
+      selectAllInput.prop('checked', false);
+    } else if (allChecked) {
+      selectAllInput.prop('checked', true);
     }
   });
 });
