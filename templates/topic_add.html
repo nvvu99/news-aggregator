@@ -1,53 +1,53 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{ title }}
+    {{ title }}
 {% endblock title %}
 
 {% block content %}
-  {% include 'leftnav.html' %}
-  <main>
-    {% include 'main_header.html' %}
-    <div class="content container">
-      {% for message in messages %}
-        <div class="alert alert-success" role="alert">
-          {{ message }}
-        </div>
-      {% endfor %}
+    {% include 'leftnav.html' %}
+    <main>
+        {% include 'main_header.html' %}
+        <div class="content container">
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
 
-      {% if form.fields.adding_categories.choices|length > 0 %}
-        <form action="" method="post">
-          <h5>Hãy lựa chọn chủ đề bạn muốn theo dõi</h5>
-          {% csrf_token %}
-          <div class="form-check select-all">
-            <label class="form-check-label switch">
-              <input
-                type="checkbox" 
-                class="form-check-input" 
-              >
-                <span class="slider round"></span>
-            </label>
-          </div>
-          {% for category in form.fields.adding_categories.queryset %}
-            <div class="form-check option">
-              <label class="form-check-label switch">
-                <input
-                  type="checkbox" 
-                  class="form-check-input" 
-                  name="{{ form.adding_categories.name }}" 
-                  id="" 
-                  value="{{ category.id }}"
-                >
-                  <span class="slider round"></span>
-                  <strong>{{ category.name }}</strong>
-              </label>
-            </div>
-          {% endfor %}
-          <button type="submit" class="btn btn-success submit">Thêm</button>
-        </form>
-      {% else %}
-        <h5 style="margin: 3em 3em">Hiện không có chủ đề mới</h3>
-      {% endif %}
-    </div>
-  </main>
+            {% if form.fields.adding_categories.choices|length > 0 %}
+                <form action="" method="post">
+                    <h5>Hãy lựa chọn chủ đề bạn muốn theo dõi</h5>
+                    {% csrf_token %}
+                    <div class="form-check select-all">
+                        <label class="form-check-label switch">
+                            <input
+                                type="checkbox" 
+                                class="form-check-input" 
+                            >
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    {% for category in form.fields.adding_categories.queryset %}
+                        <div class="form-check option">
+                            <label class="form-check-label switch">
+                                <input
+                                    type="checkbox" 
+                                    class="form-check-input" 
+                                    name="{{ form.adding_categories.name }}" 
+                                    id="" 
+                                    value="{{ category.id }}"
+                                >
+                                <span class="slider round"></span>
+                                <strong>{{ category.name }}</strong>
+                            </label>
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success submit">Thêm</button>
+                </form>
+            {% else %}
+                <h5 style="margin: 3em 3em">Hiện không có chủ đề mới</h3>
+            {% endif %}
+        </div>
+    </main>
 {% endblock content %}

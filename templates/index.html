@@ -1,107 +1,80 @@
-{% extends 'base.html' %} 
-
+{% extends 'base.html' %}
 {% block title %}
-  {{ title }}
+    {{ title }}
 {% endblock title %}
-
-{% block content %} 
-  {% include 'leftnav.html' %}
-  <main>
-    {% include 'main_header.html' %}
-    <div class="content">
-      <div class="feed">
-        <div class="list-articles">
-          {% for article in articles %}
-          <article class="row">
-            <a
-              href="{% url 'single_article' article.slug %}"
-              target="_blank"
-              class="thumb col-md-3"
-              >
-              <img src="{{ article.thumb }}" alt="" />
-            </a>
-              <div class="article-content col-md-9">
-                <a
-                  class="article-content__title row"
-                  href="{% url 'single_article' article.slug %}"
-                  target="_blank"
-                  >
-                  {{ article.title }}
-                </a>
-                  <button
-                    class="btn btn-default save-for-later"
-                    article-id="{{ article.pk }}"
-                    title="Lưu lại"
-                    type="button"
-                    >
-                    {% if article in request.user.saved_articles.all %}
-                    <i class="fas fa-bookmark"></i>
-                    {% else %}
-                    <i class="far fa-bookmark"></i>
-                    {% endif %}
-                  </button>
-                  <div class="article-content__metadata">
-                    <span>
-                      <a class="article-content__publisher-name" href="{% url 'publisher_articles' article.publisher.slug %}"
-                        >{{ article.publisher.name }}</a
-                      >
-                    </span>
-                  </div>
-                  <div class="article-content__sapo">{{ article.sapo }}</div>
-              </div>
-          </article>
-          {% endfor %}
+{% block content %}
+    {% include 'leftnav.html' %}
+    <main>
+        {% include 'main_header.html' %}
+        <div class="content">
+            <div class="feed">
+                <div class="list-articles">
+                    {% for article in articles %}
+                        <article class="row">
+                            <a href="{% url 'single_article' article.slug %}" target="_blank" class="thumb col-md-3">
+                                <img src="{{ article.thumb }}" alt=""/>
+                            </a>
+                            <div class="article-content col-md-9">
+                                <a class="article-content__title row" href="{% url 'single_article' article.slug %}" target="_blank">
+                                    {{ article.title }}
+                                </a>
+                                <button class="btn btn-default save-for-later" article-id="{{ article.pk }}" title="Lưu lại" type="button">
+                                    {% if article in request.user.saved_articles.all %}
+                                        <i class="fas fa-bookmark"></i>
+                                    {% else %}
+                                        <i class="far fa-bookmark"></i>
+                                    {% endif %}
+                                </button>
+                                <div class="article-content__metadata">
+                                    <span>
+                                        <a class="article-content__publisher-name" href="{% url 'publisher_articles' article.publisher.slug %}">
+                                            {{ article.publisher.name }}
+                                        </a>
+                                        &nbsp;/&nbsp;
+                                        <a class="article-content__publisher-name" href="{% url 'category_articles' article.category.slug %}">
+                                            {{ article.category.name }}
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="article-content__sapo">{{ article.sapo }}</div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page_number in page_range %}
+                            <li class="page-item {% if page_number == page_obj.number %}active disabled{% endif %}">
+                                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <nav aria-label="Page navigation">
-          <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="First">
-                <i class="fas fa-angle-double-left"></i>
-              </a>
-            </li>
-            <li class="page-item">
-              <a
-                class="page-link"
-                href="?page={{ page_obj.previous_page_number }}"
-                aria-label="Previous"
-                >
-                <i class="fas fa-angle-left"></i>
-              </a>
-            </li>
-            {% endif %} 
-
-            {% for page_number in page_range %}
-            <li
-              class="page-item {% if page_number == page_obj.number %}active disabled{% endif %}"
-              >
-              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-            {% endfor %} 
-
-            {% if page_obj.has_next %}
-            <li class="page-item">
-              <a
-                class="page-link"
-                href="?page={{ page_obj.next_page_number }}"
-                aria-label="Next"
-                >
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-            <li class="page-item">
-              <a
-                class="page-link"
-                href="?page={{ page_obj.paginator.num_pages }}"
-                aria-label="Last"
-                >
-                <i class="fas fa-angle-double-right"></i>
-              </a>
-            </li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </main>
+    </main>
 {% endblock content %}

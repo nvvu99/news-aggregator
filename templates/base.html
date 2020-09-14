@@ -1,28 +1,39 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
-
-    {% endblock %}
-    <script src="{% static 'jquery-3.5.0/jquery-3.5.0.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'bootstrap-4.4.1/js/bootstrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'bootstrap-4.4.1/js/bootstrap.bundle.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/all.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/brands.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/fontawesome.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/regular.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/solid.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'fontawesome-5.13.0/js/v4-shims.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    
-    <script src="{% static 'js/main.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
-        $('#{{selected_leftnav_item}}').addClass('leftnav-item__selected');
-    </script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://kit.fontawesome.com/5f35b52da0.js"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="{% static 'js/main.js' %}"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+        <script type="text/javascript">
+            $("# {{ selected_leftnav_item }}").addClass("leftnav-item__selected");
+        </script>
+    </body>
 </html>

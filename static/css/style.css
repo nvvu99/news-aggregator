@@ -1,26 +1,16 @@
 /* Include all css */
 @import url(variable.css);
-@import url(../bootstrap-4.4.1/css/bootstrap.min.css);
-@import url(../bootstrap-4.4.1/css/bootstrap-grid.min.css);
-@import url(../bootstrap-4.4.1/css/bootstrap-reboot.min.css);
-@import url(../fontawesome-5.13.0/css/fontawesome.min.css);
-@import url(../fontawesome-5.13.0/css/all.min.css);
-@import url(../fontawesome-5.13.0/css/brands.min.css);
-@import url(../fontawesome-5.13.0/css/regular.min.css);
-@import url(../fontawesome-5.13.0/css/solid.min.css);
-@import url(../fontawesome-5.13.0/css/svg-with-js.min.css);
-@import url(../fontawesome-5.13.0/css/v4-shims.min.css);
 @import url(article.css);
 @import url(leftnav_dock.css);
 @import url(leftnav_list.css);
 @import url(main_header.css);
 @import url(slider_checkbox.css);
 @import url(user_menu.css);
-@import 'https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i';
+@import "https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i";
 
 * {
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
