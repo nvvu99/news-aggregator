@@ -29,6 +29,7 @@ The demo of this project is here: [vnfeed.herokuapp.com/news](https://vnfeed.her
 
 - Create a database in MySQL using command: `create database news character set utf8`
 - Open the file `my.cnf` an change the user, password respectively to your database
+
 ```
 [client]
 #protocol = tcp
@@ -49,7 +50,9 @@ default-character-set = utf8
 (venv) [niar@niar news-aggregator] pip install -r requirements.txt
 (venv) [niar@niar news-aggregator] python manage.py migrate
 (venv) [niar@niar news-aggregator] python manage.py loaddata initial_data.json
-(venv) [niar@niar news-aggregator] python manage.py crawl
+(venv) [niar@niar news-aggregator] cd scraper
+(venv) [niar@niar news-aggregator] scrapy crawl
+(venv) [niar@niar news-aggregator] cd ..
 (venv) [niar@niar news-aggregator] python manage.py runserver
 ```
 
